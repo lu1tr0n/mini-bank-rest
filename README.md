@@ -14,7 +14,7 @@ Rest application for mini bank
  2. Spring boot 3 
  3. MySQL for relational database
 
-**Note:** Swagger was installed for the Open API standard, for API documentation.
+**Note:** Swagger was installed for the Open API standard, for API documentation. All the configurations were included in the project and the database script to install the test base.
 
 Url Swagger: localhost:8080/swagger-ui/index.html#
 
