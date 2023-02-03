@@ -1,0 +1,19 @@
+#spring.application.name=bank
+#server.servlet.context-path=/v2
+server.port=8080
+
+bank.datasource.url=jdbc:mysql://localhost:3306/bank-online
+bank.datasource.username=root
+bank.datasource.password=
+
+## Generate Database
+spring.jpa.hibernate.ddl-auto=create
+
+#spring.jpa.show-sql=true
+#spring.jpa.properties.hibernate.format_sql=true
+
+## Solution in spring boot3: https://stackoverflow.com/questions/74701738/spring-boot-3-springdoc-openapi-ui-doesnt-work
+## Url Swagger
+# http://localhost:8080/swagger-ui/index.html#
+# swagger-ui custom path
+#springdoc.swagger-ui.path=/swagger-ui.html

@@ -1,0 +1,72 @@
+package com.luis.navarro.bank.controller;
+
+import java.util.List;
+import java.util.Optional;
+import java.util.function.Supplier;
+
+import org.interbanking.com.entities.Client;
+import org.interbanking.com.utils.Checker;
+import org.interbanking.com.utils.ClientResponse;
+import org.interbanking.com.utils.DefaultResponseMessage;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.luis.navarro.bank.dto.AccountDTO;
+import com.luis.navarro.bank.dto.Response;
+import com.luis.navarro.bank.util.ResponseFactory;
+
+@RestController
+@RequestMapping("/accounts")
+public class AccountController {
+	
+	@GetMapping("/getClient")
+	public ResponseEntity<ClientResponse> getClient(@RequestHeader("idClient") int idClient) {
+		Optional<Client> client = iClientService.getClient(idClient);
+		Supplier<Client> supplier = Client::new;
+		Supplier<ClientResponse> clientResponse = ClientResponse::new;
+		ClientResponse response = clientResponse.get();
+
+		if (!client.isPresent()) {
+			response.setStatus(HttpStatus.NOT_FOUND);
+			response.setMessage(DefaultResponseMessage.MESSAGE_NOT_FOUND);
+			response.setClient(supplier.get());
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+		}
+
+		response.setStatus(HttpStatus.OK);
+		response.setMessage(DefaultResponseMessage.MESSAGE_FOUND);
+		response.setClient(client.get());
+		return ResponseEntity.status(HttpStatus.OK).body(response);
+	}
+
+	@GetMapping("/getAllClients")
+	public ResponseEntity<List<Client>> getAllClient() {
+		List<Client> clients = iClientService.getAllClients();
+		if (clients.size() > 0)
+			return ResponseEntity.status(HttpStatus.OK).body(clients);
+		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(clients);
+	}
+
+	@PostMapping("/createClient")
+	public ResponseEntity<Response> createClient(@RequestBody(required = true) Client client) {
+		return ResponseFactory.ok();
+	}
+
+	@PutMapping
+	public ResponseEntity<Response> updateAccount(@RequestBody AccountDTO account) {
+		return ResponseFactory.ok();
+	}
+
+	@DeleteMapping
+	public ResponseEntity<Response> deleteAccount(@RequestHeader("idClient") int idClient) {
+		return ResponseFactory.ok();
+	}
+}

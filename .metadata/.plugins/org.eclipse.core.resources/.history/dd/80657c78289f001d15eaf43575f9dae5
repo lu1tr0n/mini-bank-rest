@@ -1,0 +1,5 @@
+package com.luis.navarro.bank.repository;
+
+public interface PersonRepository {
+
+}

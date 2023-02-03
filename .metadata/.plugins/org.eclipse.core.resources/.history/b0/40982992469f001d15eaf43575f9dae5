@@ -1,0 +1,19 @@
+spring.application.name=bank
+##server.servlet.context-path=/v2
+server.port=8080
+
+bank.datasource.url=jdbc:mysql://localhost:3306/bank-online
+bank.datasource.username=root
+bank.datasource.password=
+
+## Generate Database
+spring.jpa.hibernate.ddl-auto=update
+
+#spring.jpa.show-sql=true
+#spring.jpa.properties.hibernate.format_sql=true
+
+springdoc.version=version 2
+info.API.name=Bank Online Api Rest
+info.API.version=Version 2
+info.team.name=lu1tr0n
+info.API.documentation-link=http://{host}/{version}/swagger-ui.html

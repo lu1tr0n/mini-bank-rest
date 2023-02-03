@@ -1,0 +1,66 @@
+package com.luis.navarro.bank.dto;
+
+import java.io.Serializable;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import com.luis.navarro.bank.util.DefaultResponseMessage;
+
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.RequiredArgsConstructor;
+import lombok.experimental.SuperBuilder;
+
+@Data
+@SuperBuilder
+@RequiredArgsConstructor
+@AllArgsConstructor(access = AccessLevel.PUBLIC)
+@JsonInclude(content = Include.NON_NULL)
+@JsonIgnoreProperties(ignoreUnknown = true)
+public class PersonDTO implements Serializable {
+
+	private static final long serialVersionUID = 1L;
+
+	@NotNull(message = DefaultResponseMessage.MESSAGE_NT_NULL_NAMES)
+	@NotBlank(message = DefaultResponseMessage.MESSAGE_NT_NULL_NAMES)
+	@NotEmpty(message = DefaultResponseMessage.MESSAGE_NT_NULL_NAMES)
+	@JsonProperty(value = "names")
+	private String names;
+
+	@NotNull(message = DefaultResponseMessage.MESSAGE_NT_NULL_SURNAMES)
+	@NotBlank(message = DefaultResponseMessage.MESSAGE_NT_NULL_SURNAMES)
+	@NotEmpty(message = DefaultResponseMessage.MESSAGE_NT_NULL_SURNAMES)
+	@JsonProperty(value = "surnames")
+	private String surnames;
+	
+
+	@NotNull(message = DefaultResponseMessage.MESSAGE_NT_NULL_GENDER)
+	@NotBlank(message = DefaultResponseMessage.MESSAGE_NT_NULL_GENDER)
+	@NotEmpty(message = DefaultResponseMessage.MESSAGE_NT_NULL_GENDER)
+	@JsonProperty(value = "gender")
+	private String gender;
+	
+	@NotNull(message = DefaultResponseMessage.MESSAGE_NT_NULL_AGE)
+	@Min(value = 1, message = DefaultResponseMessage.MESSAGE_SIZE_PERSON)
+	@JsonProperty(value = "age")
+	private Integer age;
+	
+	@NotNull(message = DefaultResponseMessage.MESSAGE_NT_NULL_ID)
+	@NotBlank(message = DefaultResponseMessage.MESSAGE_NT_NULL_ID)
+	@NotEmpty(message = DefaultResponseMessage.MESSAGE_NT_NULL_ID)
+	@JsonProperty(value = "document_id")
+	private String documentId;
+	
+	@JsonProperty(value = "address", required = false)
+	private String address;
+	
+	@JsonProperty(value = "telephone", required = false)
+	private String telephone;
+}

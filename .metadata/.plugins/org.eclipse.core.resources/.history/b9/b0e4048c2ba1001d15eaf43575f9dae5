@@ -1,0 +1,27 @@
+package com.luis.navarro.bank.controller;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+import java.util.List;
+
+import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.luis.navarro.bank.dto.Response;
+import com.luis.navarro.bank.service.CustomerService;
+
+public class CustomerControllerTest {
+
+	@Mock
+	private CustomerService customerService;
+	
+	private static final ObjectMapper mapper = new ObjectMapper();
+  
+	@Test
+	void when_counter_customers() throws Exception {
+		var result = customerService.findAllCustomer();
+		var responseObject = mapper.convertValue(result.getBody(), Response.class);
+		var responseList = mapper.convertValue(responseObject, List.class);
+		assertEquals(1, responseList.size());
+	}
+}

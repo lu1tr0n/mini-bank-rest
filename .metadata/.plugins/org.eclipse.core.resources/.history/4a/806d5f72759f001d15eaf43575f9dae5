@@ -1,0 +1,44 @@
+package com.luis.navarro.bank.dto;
+
+import java.math.BigDecimal;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
+
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.RequiredArgsConstructor;
+
+@Data
+@Builder
+@RequiredArgsConstructor
+@AllArgsConstructor(access = AccessLevel.PUBLIC)
+@JsonInclude(content = Include.NON_NULL)
+@JsonIgnoreProperties(ignoreUnknown = true)
+public class PersonDTO {
+
+	@JsonProperty(value = "names")
+	private String names;
+	
+	@JsonProperty(value = "surnames")
+	private String surnames;
+	
+	@JsonProperty(value = "gender")
+	private String gender;
+	
+	@JsonProperty(value = "age")
+	private Integer age;
+	
+	@JsonProperty(value = "document_id")
+	private String documentId;
+	
+	@JsonProperty(value = "address")
+	private String address;
+	
+	@JsonProperty(value = "telephone")
+	private String telephone;
+}

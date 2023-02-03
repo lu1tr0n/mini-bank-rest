@@ -1,0 +1,23 @@
+package com.luis.navarro.bank.service.impl;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
+
+import com.luis.navarro.bank.dto.AccountDTO;
+import com.luis.navarro.bank.dto.Response;
+import com.luis.navarro.bank.repository.AccountRepository;
+import com.luis.navarro.bank.service.AccountService;
+
+@Service
+public class AccountServiceImp implements AccountService {
+
+	@Autowired
+	private AccountRepository accountRepository;
+	
+	@Override
+	public ResponseEntity<Response> save(AccountDTO request) {
+		return null;
+	}
+
+}

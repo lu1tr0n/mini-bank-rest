@@ -1,0 +1,42 @@
+package com.luis.navarro.bank.mapper;
+
+import org.springframework.stereotype.Component;
+
+import com.luis.navarro.bank.dto.CustomerDTO;
+import com.luis.navarro.bank.entity.Customer;
+
+@Component
+public class CustomerMapper {
+
+	/**
+	 * @param customer
+	 * @return
+	 */
+	public CustomerDTO toModel(Customer customer) {
+		return CustomerDTO.builder()
+				.names(customer.getNames())
+				.surnames(customer.getSurnames())
+				.gender(customer.getGender())
+				.age(customer.getAge())
+				.documentId(customer.getDocumentId())
+				.address(customer.getAddress())
+				.telephone(customer.getTelephone())
+				.state(customer.getState())
+				.password(customer.getPassword())
+				.build();
+	}
+	
+	public Customer toEntity(CustomerDTO customerDTO) {
+		return Customer.builder()
+				.names(customerDTO.getNames())
+				.surnames(customerDTO.getSurnames())
+				.gender(customerDTO.getGender())
+				.age(customerDTO.getAge())
+				.documentId(customerDTO.getDocumentId())
+				.address(customerDTO.getAddress())
+				.telephone(customerDTO.getTelephone())
+				.state(customerDTO.getState())
+				.password(customerDTO.getPassword())
+				.build();
+	}
+}

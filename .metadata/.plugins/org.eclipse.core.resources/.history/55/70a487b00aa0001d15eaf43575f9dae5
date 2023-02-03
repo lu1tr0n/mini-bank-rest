@@ -1,0 +1,14 @@
+package com.luis.navarro.bank.mapper;
+
+import org.springframework.stereotype.Component;
+
+import com.luis.navarro.bank.dto.CustomerDTO;
+import com.luis.navarro.bank.entity.Customer;
+
+@Component
+public class CustomerMapper {
+
+	public CustomerDTO toModel(Customer customer) {
+		
+	}
+}

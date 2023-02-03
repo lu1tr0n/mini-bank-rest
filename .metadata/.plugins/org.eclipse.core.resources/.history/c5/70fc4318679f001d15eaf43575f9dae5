@@ -1,0 +1,35 @@
+package com.luis.navarro.bank.dto;
+
+import java.math.BigDecimal;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.luis.navarro.bank.util.DefaultResponseMessage;
+
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import lombok.Builder;
+import lombok.Data;
+
+@Data
+@Builder
+@JsonInclude(content = Include.NON_NULL)
+@JsonIgnoreProperties(ignoreUnknown = true)
+public class AccountDTO {
+
+	@NotNull(message = DefaultResponseMessage.MESSAGE_NT_NULL)
+	@NotBlank(message = DefaultResponseMessage.MESSAGE_NT_NULL)
+	@JsonProperty(value = "account_number")
+	private String accountNumber;
+	
+	@JsonProperty(value = "account_type")
+	private String accountType;
+	
+	@JsonProperty(value = "starting_balance")
+	private BigDecimal startingBalance;
+	
+	@JsonProperty(value = "account_state")
+	private Boolean accountState;
+}

@@ -1,0 +1,88 @@
+package com.luis.navarro.bank.service.impl;
+
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
+
+import com.luis.navarro.bank.dto.PersonDTO;
+import com.luis.navarro.bank.dto.Response;
+import com.luis.navarro.bank.entity.Person;
+import com.luis.navarro.bank.exception.RequestException;
+import com.luis.navarro.bank.mapper.PersonMapper;
+import com.luis.navarro.bank.repository.PersonRepository;
+import com.luis.navarro.bank.service.PersonService;
+import com.luis.navarro.bank.util.DefaultResponseMessage;
+import com.luis.navarro.bank.util.ResponseFactory;
+
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
+@Service
+public class PersonServiceImpl implements PersonService {
+	
+	@Autowired
+	private PersonRepository personRepository;
+	
+	@Autowired
+	private PersonMapper personMapper;
+
+	@Override
+	public ResponseEntity<Response> save(PersonDTO request) {
+		Optional<Person> personSearch = personRepository.findByDocumentId(request.getDocumentId());
+		if (Boolean.FALSE.equals(personSearch.isEmpty())) {
+			throw new RequestException(HttpStatus.NOT_ACCEPTABLE, "ERRPERSONSV001", DefaultResponseMessage.MESSAGE_FND_PERSON);
+		}
+		return ResponseFactory.create(personMapper.toModel(personRepository.save(personMapper.toEntity(request))));
+	}
+
+	@Override
+	public ResponseEntity<Response> update(PersonDTO request) {
+		Optional<Person> personSearch = personRepository.findByDocumentId(request.getDocumentId());
+		if (Boolean.TRUE.equals(personSearch.isEmpty())) {
+			throw new RequestException(HttpStatus.NOT_ACCEPTABLE, "ERRPERSONUP001", DefaultResponseMessage.MESSAGE_NT_FND_PERSON);
+		}
+		/* Update fields
+		 * */
+		personSearch.get().setNames(request.getNames());
+		personSearch.get().setSurnames(request.getSurnames());
+		personSearch.get().setGender(request.getGender());
+		personSearch.get().setAge(request.getAge());
+		personSearch.get().setAddress(request.getAddress());
+		personSearch.get().setTelephone(request.getTelephone());
+		return ResponseFactory.ok(personMapper.toModel(personRepository.save(personSearch.get())));
+	}
+
+	@Override
+	public ResponseEntity<Response> delete(String documentId) {
+		Optional<Person> personSearch = personRepository.findByDocumentId(documentId);
+		if (Boolean.TRUE.equals(personSearch.isEmpty())) {
+			throw new RequestException(HttpStatus.NOT_FOUND, "ERRPERSONDLT001", DefaultResponseMessage.MESSAGE_NT_FND_PERSON);
+		}
+		personRepository.delete(personSearch.get());
+		return ResponseFactory.ok(true);
+	}
+
+	@Override
+	public ResponseEntity<Response> findPersonByDocumentId(String documentId) {
+		Optional<Person> personSearch = personRepository.findByDocumentId(documentId);
+		if (Boolean.TRUE.equals(personSearch.isEmpty())) {
+			throw new RequestException(HttpStatus.NOT_FOUND, "ERRPERSONFND001", DefaultResponseMessage.MESSAGE_NT_FND_PERSON);
+		}
+		return ResponseFactory.ok(personMapper.toModel(personSearch.get()));
+	}
+
+	@Override
+	public ResponseEntity<Response> findAllPerson() {
+		List<Person> personList = personRepository.findAll();
+		log.info("FAPLA001: counter is {}", personList.size());
+		if (personList == null || personList.isEmpty()) {
+			throw new RequestException(HttpStatus.NOT_FOUND, "ERRPERSONALL001", DefaultResponseMessage.MESSAGE_LIST_PERSON);
+		}
+		return ResponseFactory.ok(personMapper.toModelList(personList));
+	}
+
+}

@@ -1,0 +1,51 @@
+package com.luis.navarro.bank.service.impl;
+
+import java.util.Optional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
+
+import com.luis.navarro.bank.dto.PersonDTO;
+import com.luis.navarro.bank.dto.Response;
+import com.luis.navarro.bank.entity.Person;
+import com.luis.navarro.bank.mapper.PersonMapper;
+import com.luis.navarro.bank.repository.PersonRepository;
+import com.luis.navarro.bank.service.PersonService;
+
+@Service
+public class PersonServiceImpl implements PersonService {
+	
+	@Autowired
+	private PersonRepository personRepository;
+	
+	@Autowired
+	private PersonMapper personMapper;
+
+	@Override
+	public ResponseEntity<Response> save(PersonDTO request) {
+		Optional<Person> personSearch = personRepository.findByDocumentId(request.getDocumentId());
+		return null;
+	}
+
+	@Override
+	public ResponseEntity<Response> update(PersonDTO request) {
+		return null;
+	}
+
+	@Override
+	public ResponseEntity<Response> delete(String documentId) {
+		return null;
+	}
+
+	@Override
+	public ResponseEntity<Response> findPersonByDocumentId(String documentId) {
+		return null;
+	}
+
+	@Override
+	public ResponseEntity<Response> findAllPerson() {
+		return null;
+	}
+
+}

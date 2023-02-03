@@ -1,0 +1,43 @@
+package com.luis.navarro.bank.service.impl;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
+
+import com.luis.navarro.bank.dto.CustomerDTO;
+import com.luis.navarro.bank.dto.Response;
+import com.luis.navarro.bank.repository.CustomerRepository;
+import com.luis.navarro.bank.service.CustomerService;
+
+@Service
+public class CustomerServiceImpl implements CustomerService {
+	
+	@Autowired
+	private CustomerRepository customerRepository;
+
+	@Override
+	public ResponseEntity<Response> save(CustomerDTO request) {
+		return null;
+	}
+
+	@Override
+	public ResponseEntity<Response> update(CustomerDTO request) {
+		return null;
+	}
+
+	@Override
+	public ResponseEntity<Response> delete(String documentId) {
+		return null;
+	}
+
+	@Override
+	public ResponseEntity<Response> findCustomerByDocumentId(String documentId) {
+		return null;
+	}
+
+	@Override
+	public ResponseEntity<Response> findAllCustomer() {
+		return null;
+	}
+
+}

@@ -1,0 +1,5 @@
+package com.luis.navarro.bank.dto;
+
+public class PersonDTO {
+
+}

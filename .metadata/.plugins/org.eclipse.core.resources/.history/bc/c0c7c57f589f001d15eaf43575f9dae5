@@ -1,0 +1,8 @@
+package com.luis.navarro.bank.configuration;
+
+import org.springframework.context.annotation.Configuration;
+
+@Configuration
+public class SwaggerConfig {
+
+}

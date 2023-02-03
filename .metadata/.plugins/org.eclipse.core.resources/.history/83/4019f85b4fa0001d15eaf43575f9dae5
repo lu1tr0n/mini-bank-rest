@@ -1,0 +1,71 @@
+package com.luis.navarro.bank.mapper;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.springframework.stereotype.Component;
+
+import com.luis.navarro.bank.dto.CustomerDTO;
+import com.luis.navarro.bank.entity.Customer;
+
+@Component
+public class CustomerMapper {
+
+	/**
+	 * @param customer
+	 * @return
+	 */
+	public CustomerDTO toModel(Customer customer) {
+		return CustomerDTO.builder()
+				.names(customer.getNames())
+				.surnames(customer.getSurnames())
+				.gender(customer.getGender())
+				.age(customer.getAge())
+				.documentId(customer.getDocumentId())
+				.address(customer.getAddress())
+				.telephone(customer.getTelephone())
+				.state(customer.getState())
+				.password(customer.getPassword())
+				.build();
+	}
+	
+	/**
+	 * @param customerDTO
+	 * @return
+	 */
+	public Customer toEntity(CustomerDTO customerDTO) {
+		return Customer.builder()
+				.names(customerDTO.getNames())
+				.surnames(customerDTO.getSurnames())
+				.gender(customerDTO.getGender())
+				.age(customerDTO.getAge())
+				.documentId(customerDTO.getDocumentId())
+				.address(customerDTO.getAddress())
+				.telephone(customerDTO.getTelephone())
+				.state(customerDTO.getState())
+				.password(customerDTO.getPassword())
+				.build();
+	}
+	
+	/**
+	 * @param customer
+	 * @return
+	 */
+	public List<CustomerDTO> toModelList(List<Customer> customer) {
+		List<CustomerDTO> newCustomerList = new ArrayList<>();
+		newCustomerList.stream().forEach(info -> {
+			CustomerDTO newCustomer = new CustomerDTO();
+			newCustomer.setNames(info.getNames());
+			newCustomer.setSurnames(info.getSurnames());
+			newCustomer.setGender(info.getGender());
+			newCustomer.setAge(info.getAge());
+			newCustomer.setDocumentId(info.getDocumentId());
+			newCustomer.setAddress(info.getAddress());
+			newCustomer.setTelephone(info.getTelephone());
+			newCustomer.setState(info.getState());
+			newCustomer.setPassword(info.getPassword());
+			newCustomerList.add(newCustomer);
+		});
+		return newCustomerList;
+	}
+}

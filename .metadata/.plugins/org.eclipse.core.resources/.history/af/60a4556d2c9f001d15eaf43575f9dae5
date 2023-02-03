@@ -1,0 +1,8 @@
+package com.luis.navarro.bank.dto;
+
+public class AccountDto {
+
+	private String accountNumber;
+	
+	private String accountType;
+}

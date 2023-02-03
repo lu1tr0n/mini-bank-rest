@@ -1,0 +1,15 @@
+package com.luis.navarro.bank.repository;
+
+import java.io.Serializable;
+import java.util.Optional;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+import com.luis.navarro.bank.entity.Account;
+
+@Repository
+public interface AccountRepository extends JpaRepository<Account, Serializable> {
+
+	public Optional<Account> findByAccountNumber(String accountNumber);
+}

@@ -1,0 +1,20 @@
+package com.luis.navarro.bank.dto;
+
+import java.math.BigDecimal;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+public class AccountDto {
+
+	@JsonProperty(value = "account_number")
+	private String accountNumber;
+	
+	@JsonProperty(value = "account_type")
+	private String accountType;
+	
+	@JsonProperty(value = "starting_balance")
+	private BigDecimal startingBalance;
+	
+	@JsonProperty(value = "account_state")
+	private String accountState;
+}

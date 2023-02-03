@@ -1,0 +1,62 @@
+package com.luis.navarro.bank.mapper;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.springframework.stereotype.Component;
+
+import com.luis.navarro.bank.dto.MovementsDTO;
+import com.luis.navarro.bank.entity.Account;
+import com.luis.navarro.bank.entity.Movements;
+
+@Component
+public class MovementsMapper {
+
+	/**
+	 * @param movement
+	 * @return
+	 */
+	public MovementsDTO toModel(Movements movement, Account account) {
+		return MovementsDTO.builder()
+				.movementDate(movement.getMovementDate())
+				.movementType(movement.getMovementType())
+				.movementValue(movement.getMovementValue())
+				.movementDescription(movement.getMovementDescription())
+				.accountNumber(movement.getAccount().getAccountNumber())
+				.balance(movement.getBalance())
+				.build();
+	}
+	
+	/**
+	 * @param movement
+	 * @return
+	 */
+	public Movements toEntity(MovementsDTO movement, Account account) {
+		return Movements.builder()
+				.movementDate(movement.getMovementDate())
+				.movementType(movement.getMovementType())
+				.movementValue(movement.getMovementValue())
+				.movementDescription(movement.getMovementDescription())
+				.balance(account.getStartingBalance())
+				.account(account)
+				.build();
+	}
+	
+	/**
+	 * @param movement
+	 * @return
+	 */
+	public List<MovementsDTO> toModelList(List<Movements> movement) {
+		List<MovementsDTO> newMovementList = new ArrayList<>();
+		movement.stream().forEach(info -> {
+			MovementsDTO newMovement = new MovementsDTO();
+			newMovement.setMovementDate(info.getMovementDate());
+			newMovement.setMovementType(info.getMovementType());
+			newMovement.setMovementValue(info.getMovementValue());
+			newMovement.setMovementDescription(info.getMovementDescription());
+			newMovement.setAccountNumber(info.getAccount().getAccountNumber());
+			newMovementList.add(newMovement);
+		});
+		return newMovementList;
+	}
+}

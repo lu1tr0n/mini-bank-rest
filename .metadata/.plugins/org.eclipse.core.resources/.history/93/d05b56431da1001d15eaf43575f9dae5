@@ -1,0 +1,167 @@
+package com.luis.navarro.bank.service.impl;
+
+import java.math.BigDecimal;
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
+
+import com.luis.navarro.bank.dto.MovementsDTO;
+import com.luis.navarro.bank.dto.Response;
+import com.luis.navarro.bank.entity.Account;
+import com.luis.navarro.bank.entity.Movements;
+import com.luis.navarro.bank.exception.RequestException;
+import com.luis.navarro.bank.mapper.MovementsMapper;
+import com.luis.navarro.bank.repository.AccountRepository;
+import com.luis.navarro.bank.repository.MovementsRepository;
+import com.luis.navarro.bank.service.MovementsService;
+import com.luis.navarro.bank.util.DefaultResponseMessage;
+import com.luis.navarro.bank.util.ResponseFactory;
+
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
+@Service
+public class MovementsServiceImpl implements MovementsService {
+	
+	/* @description: Parameter that controls the daily limit of a client
+	 * */
+	@Value("${bank.param.max.daily}")
+	private String MaxAmountDaily;
+	
+	@Autowired
+	private MovementsRepository movementsRepository;
+	
+	@Autowired
+	private AccountRepository accountRepository;
+	
+	@Autowired
+	private MovementsMapper movementsMapper;
+
+	@Override
+	public ResponseEntity<Response> save(MovementsDTO request) {
+		Optional<Account> accountSearch = accountRepository.findByAccountNumber(request.getAccountNumber());
+		if (Boolean.TRUE.equals(accountSearch.isEmpty())) {
+			throw new RequestException(HttpStatus.NOT_FOUND, "ERRMSSAVE001", DefaultResponseMessage.MESSAGE_NT_FOUND_ACCOUNT);
+		}
+		
+		/* Check if amount equal zero
+		 * */
+		if (Boolean.FALSE.equals(accountSearch.isEmpty()) 
+				&& accountSearch.get().getStartingBalance().compareTo(BigDecimal.ZERO) <= 0) {
+			throw new RequestException(HttpStatus.FORBIDDEN, "ERRMSSAVE002", DefaultResponseMessage.MESSAGE_ERR_MOUNT_ZERO);
+		}
+		
+		/* Check if The maximum of the configured parameter has been exceeded
+		 * */
+		BigDecimal paramValueMax = BigDecimal.valueOf(Long.parseLong(MaxAmountDaily));
+		if (Boolean.FALSE.equals(accountSearch.isEmpty()) 
+				&& request.getMovementValue().compareTo(paramValueMax) >= 0) {
+			throw new RequestException(HttpStatus.FORBIDDEN, "ERRMSSAVE003", DefaultResponseMessage.MESSAGE_ERR_MOUNT_MAX);
+		}
+		
+		/* Check if the amount is greater than the initial balance
+		 * */
+		if (Boolean.FALSE.equals(accountSearch.isEmpty()) 
+				&& request.getMovementValue().compareTo(accountSearch.get().getStartingBalance()) > 0) {
+			throw new RequestException(HttpStatus.FORBIDDEN, "ERRMSSAVE004", DefaultResponseMessage.MESSAGE_ERR_MOUNT_GREATER_MOV);
+		}
+		
+		/* Debit or credit is made to the account
+		 * */
+		BigDecimal amountBalance = accountSearch.get().getStartingBalance();
+		if (request.getMovementValue().signum() != -1) {
+			log.info("INFOMOV001 Debit: {}", request.getMovementValue());
+			accountSearch.get().setStartingBalance(amountBalance.subtract(request.getMovementValue()));
+		} else {
+			log.info("INFOMOV002 Credit: {}", request.getMovementValue());
+			accountSearch.get().setStartingBalance(amountBalance.add(request.getMovementValue()));
+		}
+		
+		return ResponseFactory.create(movementsMapper.toModel(movementsRepository.save(movementsMapper.toEntity(request, accountSearch.get())), accountSearch.get()));
+	}
+
+	@Override
+	public ResponseEntity<Response> update(MovementsDTO request) {
+		if (request == null || request.getIdMovement() == null || request.getIdMovement() <= 0) {
+			throw new RequestException(HttpStatus.FORBIDDEN, "ERRMSDELETE001", DefaultResponseMessage.MESSAGE_ERR_MOV_ID);
+		}
+		
+		Optional<Movements> movementSearch = movementsRepository.findById(request.getIdMovement());
+		if (Boolean.TRUE.equals(movementSearch.isEmpty())) {
+			throw new RequestException(HttpStatus.NOT_FOUND, "ERRMSDELETE002", DefaultResponseMessage.MESSAGE_NT_FOUND_MOV);
+		}
+		
+		/* Check if that the amount is not different from the amount saved
+		 * */
+		if (movementSearch.get().getMovementValue() != request.getMovementValue()) {
+			throw new RequestException(HttpStatus.FORBIDDEN, "ERRMSDELETE003", DefaultResponseMessage.MESSAGE_ERR_MOUNT_DIFFERENT);
+		}
+		
+		/* Check if that the account is not different from the account saved
+		 * */
+		if (movementSearch.get().getAccount().getAccountNumber() != request.getAccountNumber()) {	
+			throw new RequestException(HttpStatus.FORBIDDEN, "ERRMSDELETE004", DefaultResponseMessage.MESSAGE_ERR_ACCOUNT_DIFFERENT);
+		}
+		return ResponseFactory.accepted(movementsMapper.toModel(movementsMapper.toEntity(request, movementSearch.get().getAccount()), movementSearch.get().getAccount()));
+	}
+
+	@Override
+	public ResponseEntity<Response> delete(Long movementNumber) {
+		Optional<Movements> movementSearch = movementsRepository.findById(movementNumber);
+		if (Boolean.TRUE.equals(movementSearch.isEmpty())) {
+			throw new RequestException(HttpStatus.NOT_FOUND, "ERRMSDELETE001", DefaultResponseMessage.MESSAGE_NT_FOUND_MOV);
+		}
+		movementsRepository.delete(movementSearch.get());
+		return ResponseFactory.ok(true);
+	}
+
+	@Override
+	public ResponseEntity<Response> deleteAll(String accountNumber) {
+		Optional<Account> accountSearch = accountRepository.findByAccountNumber(accountNumber);
+		if (Boolean.TRUE.equals(accountSearch.isEmpty())) {
+			throw new RequestException(HttpStatus.NOT_FOUND, "ERRMSDELALL001", DefaultResponseMessage.MESSAGE_NT_FOUND_ACCOUNT);
+		}
+		/* Delete all Movements to customer
+		 * */
+		movementsRepository.deleteAllMovementsByIdAccount(accountSearch.get().getIdAccount());
+		return ResponseFactory.ok(true);
+	}
+
+	@Override
+	public ResponseEntity<Response> findMovementByIdMovement(Long movementNumber) {
+		Optional<Movements> movementSearch = movementsRepository.findById(movementNumber);
+		if (Boolean.TRUE.equals(movementSearch.isEmpty())) {
+			throw new RequestException(HttpStatus.NOT_FOUND, "ERRMSFMBIM001", DefaultResponseMessage.MESSAGE_NT_FOUND_MOV);
+		}
+		return ResponseFactory.ok(movementsMapper.toModel(movementSearch.get(), movementSearch.get().getAccount()));
+	}
+
+	@Override
+	public ResponseEntity<Response> findAllMovements() {
+		List<Movements> movementsList = movementsRepository.findAll();
+		if (movementsList == null || movementsList.isEmpty()) {
+			throw new RequestException(HttpStatus.NOT_FOUND, "ERRMSFAM001", DefaultResponseMessage.MESSAGE_LIST_MOV_ALL);
+		}
+		return ResponseFactory.ok(movementsMapper.toModelList(movementsList));
+	}
+
+	@Override
+	public ResponseEntity<Response> findAllMovementByAccountNumber(String accountNumber) {
+		Optional<Account> accountSearch = accountRepository.findByAccountNumber(accountNumber);
+		if (Boolean.TRUE.equals(accountSearch.isEmpty())) {
+			throw new RequestException(HttpStatus.NOT_FOUND, "ERRMSFAMA001", DefaultResponseMessage.MESSAGE_NT_FOUND_ACCOUNT);
+		}
+		
+		List<Movements> movementsList = movementsRepository.findAllMovementsByAccountNumber(accountNumber);
+		if (movementsList == null || movementsList.isEmpty()) {
+			throw new RequestException(HttpStatus.NOT_FOUND, "ERRMSFAMA002", DefaultResponseMessage.MESSAGE_LIST_ACC_MOV);
+		}
+		return ResponseFactory.ok(movementsMapper.toModelList(movementsList));
+	}
+
+}

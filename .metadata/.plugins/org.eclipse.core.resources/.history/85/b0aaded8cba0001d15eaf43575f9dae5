@@ -1,0 +1,61 @@
+package com.luis.navarro.bank.configuration;
+
+import javax.sql.DataSource;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.boot.autoconfigure.jdbc.DataSourceProperties;
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.boot.orm.jpa.EntityManagerFactoryBuilder;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.orm.jpa.JpaTransactionManager;
+import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
+import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
+
+import com.zaxxer.hikari.HikariDataSource;
+
+//@Configuration
+//@EnableTransactionManagement
+//@EnableJpaRepositories(basePackages = "com.luis.navarro.bank.repository", entityManagerFactoryRef = "bankEntityManagerFactory", transactionManagerRef = "bankTransactionManager")
+public class DataBaseConfiguration {
+
+	@Bean
+	@ConfigurationProperties(prefix = "bank.datasource")
+	public DataSourceProperties bankDataSourceProperties() {
+		return new DataSourceProperties();
+	}
+
+	/**
+	 * bank data source.
+	 *
+	 * @return the data source
+	 */
+	@Bean
+	public DataSource bankDataSource() {
+		return bankDataSourceProperties().initializeDataSourceBuilder().type(HikariDataSource.class).build();
+	}
+
+	/**
+	 * bank entity manager factory.
+	 *
+	 * @param builder the builder
+	 * @return the local container entity manager factory bean
+	 */
+	@Bean(name = "bankEntityManagerFactory")
+	public LocalContainerEntityManagerFactoryBean coreEntityManagerFactory(EntityManagerFactoryBuilder builder) {
+		return builder.dataSource(bankDataSource()).packages("com.luis.navarro.bank.entity").build();
+	}
+
+	/**
+	 * bank transaction manager.
+	 *
+	 * @param bankEntityManagerFactory the bank entity manager factory
+	 * @return the platform transaction manager
+	 */
+	@Bean(name = "bankTransactionManager")
+	public PlatformTransactionManager bankTransactionManager(
+			@Qualifier("bankEntityManagerFactory") LocalContainerEntityManagerFactoryBean coreEntityManagerFactory) {
+		return new JpaTransactionManager(coreEntityManagerFactory.getObject());
+	}
+}

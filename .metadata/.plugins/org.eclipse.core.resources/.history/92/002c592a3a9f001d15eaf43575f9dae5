@@ -1,0 +1,13 @@
+package com.luis.navarro.bank.service;
+
+import org.springframework.http.ResponseEntity;
+
+import com.luis.navarro.bank.dto.AccountDTO;
+import com.luis.navarro.bank.dto.Response;
+
+public interface AccountService {
+
+	public ResponseEntity<Response> save(AccountDTO request);
+	
+	public ResponseEntity<Response> update(AccountDTO request);
+}

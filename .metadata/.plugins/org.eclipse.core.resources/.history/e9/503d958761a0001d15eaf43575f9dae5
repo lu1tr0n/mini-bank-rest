@@ -1,0 +1,19 @@
+package com.luis.navarro.bank.repository;
+
+import java.io.Serializable;
+import java.util.List;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.stereotype.Repository;
+
+import com.luis.navarro.bank.entity.Movements;
+
+@Repository
+public interface MovementsRepository extends JpaRepository<Movements, Serializable>{
+	
+	public List<Movements> findAll();
+
+	@Query("SELECT m FROM Movements m JOIN m.account a WHERE a.accountNumber=?1")
+	public List<Movements> findAllMovementByAccountNumber(String accountNumber);
+}

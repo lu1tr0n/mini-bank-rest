@@ -1,0 +1,14 @@
+package com.luis.navarro.bank.dto;
+
+import java.math.BigDecimal;
+
+public class AccountDto {
+
+	private String accountNumber;
+	
+	private String accountType;
+	
+	private BigDecimal startingBalance;
+	
+	private String accountState;
+}

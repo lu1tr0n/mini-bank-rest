@@ -1,0 +1,13 @@
+package com.luis.navarro.bank.configuration;
+
+import org.springframework.context.annotation.Configuration;
+
+@Configuration
+public class SwaggerConfig {
+
+	private ApiInfo getApiInfo() {
+		return new ApiInfo("Notifier Service API", "Notifier Service API Description", "2.0",
+				"http://example.com/terms", new Contact("Elaniin", "https://elaniin.com", "hello@elaniin.com"),
+				"LICENSE", "LICENSE URL", Collections.emptyList());
+	}
+}

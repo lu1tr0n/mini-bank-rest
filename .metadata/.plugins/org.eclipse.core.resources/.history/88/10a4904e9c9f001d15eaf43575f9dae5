@@ -1,0 +1,64 @@
+package com.luis.navarro.bank.service.impl;
+
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
+
+import com.luis.navarro.bank.dto.PersonDTO;
+import com.luis.navarro.bank.dto.Response;
+import com.luis.navarro.bank.entity.Person;
+import com.luis.navarro.bank.exception.RequestException;
+import com.luis.navarro.bank.mapper.PersonMapper;
+import com.luis.navarro.bank.repository.PersonRepository;
+import com.luis.navarro.bank.service.PersonService;
+import com.luis.navarro.bank.util.DefaultResponseMessage;
+import com.luis.navarro.bank.util.ResponseFactory;
+
+@Service
+public class PersonServiceImpl implements PersonService {
+	
+	@Autowired
+	private PersonRepository personRepository;
+	
+	@Autowired
+	private PersonMapper personMapper;
+
+	@Override
+	public ResponseEntity<Response> save(PersonDTO request) {
+		Optional<Person> personSearch = personRepository.findByDocumentId(request.getDocumentId());
+		if (Boolean.FALSE.equals(personSearch.isEmpty())) {
+			throw new RequestException(HttpStatus.NOT_ACCEPTABLE, "ERRPERSON001", DefaultResponseMessage.MESSAGE_FND_PERSON);
+		}
+		return ResponseFactory.create(personMapper.toModel(personSearch.get()));
+	}
+
+	@Override
+	public ResponseEntity<Response> update(PersonDTO request) {
+		return ResponseFactory.ok();
+	}
+
+	@Override
+	public ResponseEntity<Response> delete(String documentId) {
+		return ResponseFactory.ok();
+	}
+
+	@Override
+	public ResponseEntity<Response> findPersonByDocumentId(String documentId) {
+		Optional<Person> personSearch = personRepository.findByDocumentId(documentId);
+		if (Boolean.TRUE.equals(personSearch.isEmpty())) {
+			throw new RequestException(HttpStatus.NOT_FOUND, "ERRPERSONFND001", DefaultResponseMessage.MESSAGE_NT_FND_PERSON);
+		}
+		return ResponseFactory.ok(personMapper.toModel(personSearch.get()));
+	}
+
+	@Override
+	public ResponseEntity<Response> findAllPerson() {
+		List<Person> personList = personRepository.findAll();
+		return ResponseFactory.ok();
+	}
+
+}

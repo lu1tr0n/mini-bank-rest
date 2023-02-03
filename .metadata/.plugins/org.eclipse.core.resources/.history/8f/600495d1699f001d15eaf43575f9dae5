@@ -1,0 +1,75 @@
+package com.luis.navarro.bank.configuration;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
+
+import com.luis.navarro.bank.dto.APIError;
+import com.luis.navarro.bank.exception.RequestException;
+import com.luis.navarro.bank.util.Util;
+
+import jakarta.servlet.http.HttpServletRequest;
+import lombok.extern.slf4j.Slf4j;
+
+@RestControllerAdvice
+@Slf4j
+public class GlobalExceptionHandler {
+
+	@ExceptionHandler({RequestException.class})
+    public ResponseEntity<APIError> requestException(RequestException ex, HttpServletRequest request){
+        
+       log.error("Exception : {} for {}", ex.getLocalizedMessage(), request.getRequestURI() );
+        
+        return new ResponseEntity<>(
+                APIError.builder()
+                .errorMessage(ex.getLocalizedMessage())
+                .errorCode(ex.getHttpStatus().toString())
+                .request(request.getRequestURI())
+                .requestType(request.getMethod())
+                .customMessage("Request is not valid")
+                .build(), ex.getHttpStatus());
+    }
+	
+    @ExceptionHandler({Exception.class})
+    public ResponseEntity<APIError> genericException(Exception ex, HttpServletRequest request){
+        
+        log.error("exception EGR001 : {} for {}", ex.getLocalizedMessage(), request.getRequestURI());
+        
+        return new ResponseEntity<>(
+             APIError.builder()
+             .errorMessage(ex.getLocalizedMessage()) 
+             .errorCode(HttpStatus.INTERNAL_SERVER_ERROR.toString())
+             .request(request.getRequestURI())
+             .requestType(request.getMethod())
+             .customMessage("Could not process request")
+             .build(), HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+    
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<APIError> handleValidationExceptions(MethodArgumentNotValidException ex, HttpServletRequest request) {
+    	log.error("exception ERRBRV001 : {} for {}", ex.getLocalizedMessage(), request.getRequestURI());
+        Map<String, String> errors = new HashMap<>();
+        ex.getBindingResult().getAllErrors().forEach((error) -> {
+            String fieldName = ((FieldError) error).getField();
+            String errorMessage = error.getDefaultMessage();
+            errors.put(Util.camelToSnake(fieldName), errorMessage);
+        });
+        
+        return new ResponseEntity<>(
+                APIError.builder()
+                .errorMessage(errors) 
+                .errorCode(HttpStatus.BAD_REQUEST.toString())
+                .request(request.getRequestURI())
+                .requestType(request.getMethod())
+                .customMessage("Could not process request")
+                .build(), HttpStatus.BAD_REQUEST);
+    }
+}

@@ -1,0 +1,21 @@
+package com.luis.navarro.bank.dto;
+
+import java.math.BigDecimal;
+import java.util.Date;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+public class MovementsDTO {
+
+	@JsonProperty(value = "movement_date")
+    private Date movementDate;
+	
+	@JsonProperty(value = "movement_type")
+    private String movementType;
+	
+	@JsonProperty(value = "movement_value")
+    private String movementValue;
+	
+	@JsonProperty(value = "balance")
+    private BigDecimal balance;
+}

@@ -1,0 +1,105 @@
+package com.luis.navarro.bank.controller;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.luis.navarro.bank.dto.APIError;
+import com.luis.navarro.bank.dto.AccountDTO;
+import com.luis.navarro.bank.dto.Response;
+import com.luis.navarro.bank.service.AccountService;
+import com.luis.navarro.bank.util.ResponseFactory;
+
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import jakarta.validation.Valid;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+
+@RestController
+@RequestMapping("/accounts")
+public class AccountController {
+	
+	@Autowired
+	private AccountService accountService;
+	
+	@Operation(summary = "Search account")
+	@ApiResponses({
+	    @ApiResponse(responseCode = "200", content = {
+	                @Content(schema = @Schema(implementation = AccountDTO.class), mediaType = "application/json")
+	    }),
+	    @ApiResponse(responseCode = "500", content = {
+	                @Content(schema = @Schema(implementation = APIError.class), mediaType = "application/json")
+	    }),
+	})
+	@GetMapping("/find")
+	public ResponseEntity<Response> getClient(@RequestParam(value = "account_number") String accountNumber) {
+		return ResponseFactory.ok();
+	}
+
+	@Operation(summary = "Return all accounts")
+	@ApiResponses({
+	    @ApiResponse(responseCode = "200", content = {
+	                @Content(schema = @Schema(implementation = List.class), mediaType = "application/json")
+	    }),
+	    @ApiResponse(responseCode = "500", content = {
+	                @Content(schema = @Schema(implementation = APIError.class), mediaType = "application/json")
+	    }),
+	})
+	@GetMapping
+	public ResponseEntity<Response> getAllAccount() {
+		return ResponseFactory.ok();
+	}
+
+	@Operation(summary = "Create new Account")
+	@ApiResponses({
+	    @ApiResponse(responseCode = "200", content = {
+	                @Content(schema = @Schema(implementation = AccountDTO.class), mediaType = "application/json")
+	    }),
+	    @ApiResponse(responseCode = "500", content = {
+	                @Content(schema = @Schema(implementation = APIError.class), mediaType = "application/json")
+	    }),
+	})	
+	@PostMapping
+	public ResponseEntity<Response> createAccount(@Valid @RequestBody(required = true) AccountDTO account) {
+		return accountService.save(account);
+	}
+
+	@Operation(summary = "Update data Account")
+	@ApiResponses({
+	    @ApiResponse(responseCode = "200", content = {
+	                @Content(schema = @Schema(implementation = AccountDTO.class), mediaType = "application/json")
+	    }),
+	    @ApiResponse(responseCode = "500", content = {
+	                @Content(schema = @Schema(implementation = APIError.class), mediaType = "application/json")
+	    }),
+	})
+	@PutMapping
+	public ResponseEntity<Response> updateAccount(@RequestBody AccountDTO account) {
+		return ResponseFactory.ok();
+	}
+
+	@Operation(summary = "Delete Account")
+	@ApiResponses({
+	    @ApiResponse(responseCode = "200", content = {
+	                @Content(schema = @Schema(implementation = Boolean.class), mediaType = "application/json")
+	    }),
+	    @ApiResponse(responseCode = "500", content = {
+	                @Content(schema = @Schema(implementation = APIError.class), mediaType = "application/json")
+	    }),
+	})
+	@DeleteMapping
+	public ResponseEntity<Response> deleteAccount(@RequestParam(value = "account_number") String accountNumber) {
+		return ResponseFactory.ok();
+	}
+}

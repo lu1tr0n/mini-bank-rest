@@ -1,0 +1,18 @@
+package com.luis.navarro.bank.controller;
+
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.springframework.test.web.servlet.MockMvc;
+
+import com.luis.navarro.bank.service.CustomerService;
+
+public class CustomerControllerTest {
+
+	private MockMvc mockMvc;
+
+	  @InjectMocks
+	  private CustomerController lookupController;
+	  
+	  @Mock
+	  private CustomerService customerService;
+}

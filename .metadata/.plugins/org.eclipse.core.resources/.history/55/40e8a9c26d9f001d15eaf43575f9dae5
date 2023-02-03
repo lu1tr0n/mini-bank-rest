@@ -1,0 +1,69 @@
+package com.luis.navarro.bank.service.impl;
+
+import java.util.Optional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
+
+import com.luis.navarro.bank.dto.AccountDTO;
+import com.luis.navarro.bank.dto.Response;
+import com.luis.navarro.bank.entity.Account;
+import com.luis.navarro.bank.exception.RequestException;
+import com.luis.navarro.bank.mapper.AccountMapper;
+import com.luis.navarro.bank.repository.AccountRepository;
+import com.luis.navarro.bank.service.AccountService;
+import com.luis.navarro.bank.util.DefaultResponseMessage;
+import com.luis.navarro.bank.util.ResponseFactory;
+
+@Service
+public class AccountServiceImp implements AccountService {
+
+	@Autowired
+	private AccountRepository accountRepository;
+	
+	@Autowired
+	private AccountMapper accountMapper;
+	
+	@Override
+	public ResponseEntity<Response> save(AccountDTO request) {
+		Optional<Account> accountSearch = accountRepository.findByAccountNumber(request.getAccountNumber());
+		if (Boolean.FALSE.equals(accountSearch.isEmpty())) {
+			throw new RequestException(HttpStatus.NOT_ACCEPTABLE, "ERRASACC001", DefaultResponseMessage.MESSAGE_EXISTS_ACCOUNT);
+		}
+		return ResponseFactory.ok(accountMapper.toModel(accountRepository.save(accountMapper.toEntity(request))));
+	}
+
+	@Override
+	public ResponseEntity<Response> update(AccountDTO request) {
+		Optional<Account> accountSearch = accountRepository.findByAccountNumber(request.getAccountNumber());
+		if (accountSearch.isEmpty()) {
+			throw new RequestException(HttpStatus.NOT_FOUND, "ERRNFAS001", DefaultResponseMessage.MESSAGE_NT_FOUND_ACCOUNT);
+		}
+		return null;
+	}
+
+	@Override
+	public ResponseEntity<Response> delete(String accountNumber) {
+		Optional<Account> accountSearch = accountRepository.findByAccountNumber(accountNumber);
+		if (accountSearch.isEmpty()) {
+			throw new RequestException(HttpStatus.NOT_FOUND, "ERRNFAS001", DefaultResponseMessage.MESSAGE_NT_FOUND_ACCOUNT);
+		}
+		return null;
+	}
+
+	@Override
+	public ResponseEntity<Response> findAccountByAccountNumber(String accountNumber) {
+		Optional<Account> accountSearch = accountRepository.findByAccountNumber(accountNumber);
+		if (accountSearch.isEmpty()) {
+			throw new RequestException(HttpStatus.NOT_FOUND, "ERRNFAS001", DefaultResponseMessage.MESSAGE_NT_FOUND_ACCOUNT);
+		}
+		return ResponseFactory.ok(accountMapper.toModel(accountSearch.get()));
+	}
+
+	@Override
+	public ResponseEntity<Response> findAllAccount() {
+		return ResponseFactory.ok(accountMapper.toModelList(accountRepository.findAll()));
+	}
+}

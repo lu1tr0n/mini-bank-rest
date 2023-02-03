@@ -1,0 +1,15 @@
+Herramientas Utilizadas:
+1- STS IDE
+2- DBeaver para conexion a base de datos MySQL.
+3- Postman
+
+Tecnologias:
+1- Java 17
+2- Spring boot 3
+3- MySQL para base de datos relacional
+
+Nota: Se instalo Swagger para el estandar Open Api, para la documentacion de apis.
+Url de Swagger: localhost:8080/swagger-ui/index.html#
+
+Autor: Luis Navarro
+Email: lu1tr0n.developer@gmail.com

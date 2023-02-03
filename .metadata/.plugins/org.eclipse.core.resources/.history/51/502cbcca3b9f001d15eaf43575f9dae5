@@ -1,0 +1,5 @@
+package com.luis.navarro.bank.configuration;
+
+public class GlobalExceptionHandler {
+
+}

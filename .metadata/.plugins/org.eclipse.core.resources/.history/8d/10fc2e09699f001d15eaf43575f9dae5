@@ -1,0 +1,26 @@
+package com.luis.navarro.bank.dto;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+import lombok.Builder;
+import lombok.Data;
+
+@Builder
+@Data
+public class APIError {
+
+	@JsonProperty(value = "error_message")
+    private String errorMessage;
+
+	@JsonProperty(value = "error_code")
+    private String errorCode;
+
+    private String request;
+    
+    @JsonProperty(value = "request_type")
+    private String requestType;
+
+    @JsonProperty(value = "message")
+    private String customMessage;
+
+}

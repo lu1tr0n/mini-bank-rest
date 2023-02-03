@@ -1,0 +1,36 @@
+package com.luis.navarro.bank.mapper;
+
+import org.springframework.stereotype.Component;
+
+import com.luis.navarro.bank.dto.AccountDTO;
+import com.luis.navarro.bank.entity.Account;
+
+@Component
+public class AccountMapper {
+
+	/**
+	 * @param account
+	 * @return
+	 */
+	public AccountDTO toModel(Account account) {
+		return AccountDTO.builder().
+				accountNumber(account.getAccountNumber())
+				.accountState(account.getAccountState())
+				.accountType(account.getAccountType())
+				.startingBalance(account.getStartingBalance())
+				.build();
+	}
+	
+	/**
+	 * @param account
+	 * @return
+	 */
+	public Account toEntity(AccountDTO account) {
+		return Account.builder()
+				.accountNumber(account.getAccountNumber())
+				.accountState(account.getAccountState())
+				.accountType(account.getAccountType())
+				.startingBalance(account.getStartingBalance())
+				.build();
+	}
+}

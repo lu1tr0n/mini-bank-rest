@@ -1,0 +1,12 @@
+package com.luis.navarro.bank.util;
+
+public class DefaultResponseMessage {
+
+	public final static String MESSAGE_CREATED_OK = "Client created";
+	
+	public final static String MESSAGE_NT_FOUND_ACCOUNT = "No se ha encontrado la cuenta proporcionada.";
+	
+	public final static String MESSAGE_NT_NULL_NM_ACCOUNT = "El numero de cuenta es obligatorio.";
+	
+	public final static String MESSAGE_NT_NULL_ACCOUNT_TYPE = "El numero de cuenta es obligatorio.";
+}

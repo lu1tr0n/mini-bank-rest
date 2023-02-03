@@ -1,0 +1,12 @@
+package com.luis.navarro.bank.configuration;
+
+import org.springframework.context.annotation.Configuration;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
+
+@Configuration
+@EnableTransactionManagement
+@EnableJpaRepositories(basePackages = "credicomer.middleware.bel.repository", entityManagerFactoryRef = "coreEntityManagerFactory", transactionManagerRef = "coreTransactionManager")
+public class DataBaseConfiguration {
+
+}

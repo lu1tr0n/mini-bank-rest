@@ -1,0 +1,57 @@
+package com.luis.navarro.bank.service.impl;
+
+import java.util.Optional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
+
+import com.luis.navarro.bank.dto.CustomerDTO;
+import com.luis.navarro.bank.dto.Response;
+import com.luis.navarro.bank.entity.Customer;
+import com.luis.navarro.bank.exception.RequestException;
+import com.luis.navarro.bank.mapper.CustomerMapper;
+import com.luis.navarro.bank.repository.CustomerRepository;
+import com.luis.navarro.bank.service.CustomerService;
+import com.luis.navarro.bank.util.DefaultResponseMessage;
+
+@Service
+public class CustomerServiceImpl implements CustomerService {
+	
+	@Autowired
+	private CustomerRepository customerRepository;
+	
+	@Autowired
+	private CustomerMapper customerMapper;
+
+	@Override
+	public ResponseEntity<Response> save(CustomerDTO request) {
+		Optional<Customer> customerSearch = customerRepository.findByDocumentId(request.getDocumentId());
+		if (customerSearch.isEmpty()) {
+			throw new RequestException(HttpStatus.NOT_ACCEPTABLE, "ERRASACC001", DefaultResponseMessage.MESSAGE_EXISTS_CUSTOMER);
+		}
+		return null;
+	}
+
+	@Override
+	public ResponseEntity<Response> update(CustomerDTO request) {
+		return null;
+	}
+
+	@Override
+	public ResponseEntity<Response> delete(String documentId) {
+		return null;
+	}
+
+	@Override
+	public ResponseEntity<Response> findCustomerByDocumentId(String documentId) {
+		return null;
+	}
+
+	@Override
+	public ResponseEntity<Response> findAllCustomer() {
+		return null;
+	}
+
+}

@@ -1,0 +1,58 @@
+package com.luis.navarro.bank.controller;
+
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.luis.navarro.bank.dto.AccountDTO;
+import com.luis.navarro.bank.dto.Response;
+import com.luis.navarro.bank.util.ResponseFactory;
+
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+
+@RestController
+@RequestMapping("/accounts")
+public class AccountController {
+	
+	@Operation(summary = "This is to fetch All the Participantss stored in Db")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200",
+            description = "Details of All the Participants",
+            content = {@Content(mediaType = "application/json")}),
+            @ApiResponse(responseCode = "404",
+            description = "Page not found",
+            content = @Content)
+    })
+	@GetMapping("/find")
+	public ResponseEntity<Response> getClient(@RequestParam(value = "account_number") String accountNumber) {
+		return ResponseFactory.ok();
+	}
+
+	@GetMapping
+	public ResponseEntity<Response> getAllAccount() {
+		return ResponseFactory.ok();
+	}
+
+	@PostMapping("/createClient")
+	public ResponseEntity<Response> createAccount(@RequestBody(required = true) AccountDTO account) {
+		return ResponseFactory.ok();
+	}
+
+	@PutMapping
+	public ResponseEntity<Response> updateAccount(@RequestBody AccountDTO account) {
+		return ResponseFactory.ok();
+	}
+
+	@DeleteMapping
+	public ResponseEntity<Response> deleteAccount(@RequestHeader("idClient") int idClient) {
+		return ResponseFactory.ok();
+	}
+}

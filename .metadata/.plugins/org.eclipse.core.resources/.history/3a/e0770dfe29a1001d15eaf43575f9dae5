@@ -1,0 +1,74 @@
+package com.luis.navarro.bank.controller;
+
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.luis.navarro.bank.dto.CustomerDTO;
+import com.luis.navarro.bank.dto.Response;
+import com.luis.navarro.bank.service.CustomerService;
+
+public class CustomerControllerTest {
+
+	private MockMvc mockMvc;
+
+	  @InjectMocks
+	  private CustomerController lookupController;
+	  
+	  @Mock
+	  private CustomerService customerService;
+	  
+	  /**
+	   * @throws java.lang.Exception
+	   */
+	  @BeforeEach
+	  public void setUp() throws Exception {
+	    MockitoAnnotations.openMocks(this);
+	    this.mockMvc = MockMvcBuilders.standaloneSetup(lookupController).build();
+	  }
+	  
+	  @Test
+	  void whenSubmitUser_thenUserIdIsGenerated() throws Exception {
+		CustomerDTO newCustomer = new CustomerDTO();
+		newCustomer.setNames("");
+
+		ResponseEntity<Response> result = null;
+
+	    Mockito.when(customerService.save(Mockito.any(CustomerDTO.class))).thenReturn(result);
+
+	    this.mockMvc
+	        .perform(post("/add-user").content(asJsonString(newCustomer)).contentType(MediaType.APPLICATION_JSON)
+	            .accept(MediaType.APPLICATION_JSON))
+	        .andExpect(status().isOk()).andDo(print())
+	        .andExpect(MockMvcResultMatchers.jsonPath("$.id", is(notNullValue())))
+	        .andExpect(MockMvcResultMatchers.jsonPath("$.id", is(equalTo(id.toString()))))
+	        .andReturn();
+	  }
+
+	  /**
+	 * @param obj
+	 * @return
+	 */
+	@SuppressWarnings("unused")
+	private static String asJsonString(final Object obj) {
+	    try {
+	      ObjectMapper objectMapper = new ObjectMapper();
+	      return objectMapper.writeValueAsString(obj);
+	    } catch (Exception e) {
+	      throw new RuntimeException(e);
+	    }
+	  }
+}

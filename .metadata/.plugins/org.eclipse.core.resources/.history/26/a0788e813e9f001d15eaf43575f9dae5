@@ -1,0 +1,19 @@
+package com.luis.navarro.bank.exception;
+
+import org.springframework.http.HttpStatus;
+
+public class ValidationException extends RuntimeException {
+
+	private static final long serialVersionUID = 1L;
+	
+	private String code;
+	
+    private HttpStatus httpStatus;
+    
+    public  ValidationException(HttpStatus httpStatus, String code, String message){
+        super(message);
+        this.code = code;
+        this.httpStatus = httpStatus;
+    }
+
+}

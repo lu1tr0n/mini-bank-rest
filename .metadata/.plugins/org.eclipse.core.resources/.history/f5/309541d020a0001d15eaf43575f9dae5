@@ -1,0 +1,59 @@
+package com.luis.navarro.bank.mapper;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+import com.luis.navarro.bank.dto.MovementsDTO;
+import com.luis.navarro.bank.entity.Movements;
+
+@Component
+public class MovementsMapper {
+	
+	@Autowired
+	private AccountMapper accountMapper;
+
+	/**
+	 * @param movement
+	 * @return
+	 */
+	public MovementsDTO toModel(Movements movement) {
+		return MovementsDTO.builder()
+				.movementDate(movement.getMovementDate())
+				.movementType(movement.getMovementType())
+				.movementValue(movement.getMovementValue())
+				.balance(movement.getBalance())
+				.accountCustomer(accountMapper.toModel(movement.getAccount()))
+				.build();
+	}
+	
+	/**
+	 * @param movement
+	 * @return
+	 */
+	public Movements toEntity(MovementsDTO movement) {
+		return Movements.builder()
+				.movementDate(movement.getMovementDate())
+				.movementType(movement.getMovementType())
+				.movementValue(movement.getMovementValue())
+				.balance(movement.getBalance())
+				.account(accountMapper.toEntity(movement.getAccountCustomer()))
+				.build();
+	}
+	
+	public List<MovementsDTO> toModelList(List<Movements> movement) {
+		List<MovementsDTO> newMovementList = new ArrayList<>();
+		movement.stream().forEach(info -> {
+			MovementsDTO newMovement = new MovementsDTO();
+			newMovement.setMovementDate(info.getMovementDate());
+			newMovement.setMovementType(info.getMovementType());
+			newMovement.setMovementValue(info.getMovementValue());
+			newMovement.setBalance(info.getBalance());
+			newMovement.setAccountCustomer(accountMapper.toModel(info.getAccount()));
+			newMovementList.add(newMovement);
+		});
+		return newMovementList;
+	}
+}

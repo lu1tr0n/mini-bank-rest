@@ -1,0 +1,12 @@
+package com.luis.navarro.bank.entity;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+
+public class Movements {
+
+    @GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name = "id_movement", unique = true, nullable = false)
+	private Long idMovement;
+}

@@ -1,0 +1,16 @@
+package com.luis.navarro.bank.controller;
+
+import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+@RequestMapping
+public class HomeController {
+
+	@GetMapping(value = {"/", ""}, produces = MediaType.APPLICATION_JSON_VALUE)
+	public String firstPage() {
+		return "Begin Site of bank online.";
+	}
+}

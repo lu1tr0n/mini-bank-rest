@@ -1,0 +1,8 @@
+package com.luis.navarro.bank.mapper;
+
+import org.springframework.stereotype.Component;
+
+@Component
+public class MovementsMapper {
+
+}

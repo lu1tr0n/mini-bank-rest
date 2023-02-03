@@ -1,0 +1,22 @@
+#spring.application.name=bank
+#server.servlet.context-path=/v2
+server.port=8080
+
+bank.datasource.url=jdbc:mysql://localhost:3306/bank-online
+bank.datasource.username=root
+bank.datasource.password=
+
+## Generate Database
+spring.jpa.hibernate.ddl-auto=update
+
+#spring.jpa.show-sql=true
+#spring.jpa.properties.hibernate.format_sql=true
+
+springdoc.packages-to-scan=com.luis.navarro.bank.controller
+springdoc.api-docs.enabled=true
+springdoc.swagger-ui.path=documentation
+springdoc.swagger-ui.enabled=true
+springdoc.swagger-ui.operationsSorter=method
+springdoc.swagger-ui.tryItOutEnabled=true
+springdoc.swagger-ui.filter=true
+springdoc.swagger-ui.tagsSorter=alpha

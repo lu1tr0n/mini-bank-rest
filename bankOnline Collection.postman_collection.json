@@ -1,0 +1,432 @@
+{
+	"info": {
+		"_postman_id": "f08fc07c-bc9e-4501-b5cd-bc4040150f9d",
+		"name": "bankOnline Collection",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "13210541"
+	},
+	"item": [
+		{
+			"name": "Home",
+			"item": [
+				{
+					"name": "Home",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{site}}",
+							"host": [
+								"{{site}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Clientes",
+			"item": [
+				{
+					"name": "Obtener todo los clientes Request",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{site}}{{cliente_path}}",
+							"host": [
+								"{{site}}{{cliente_path}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Buscar Cliente Request",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{site}}{{cliente_path}}/find?document_id=01448527-7",
+							"host": [
+								"{{site}}{{cliente_path}}"
+							],
+							"path": [
+								"find"
+							],
+							"query": [
+								{
+									"key": "document_id",
+									"value": "01448527-7"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Guardar Cliente Request",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"names\": \"Pedro\",\r\n  \"surnames\": \"Carpio\",\r\n  \"gender\": \"M\",\r\n  \"age\": 36,\r\n  \"document_id\": \"00001122-7\",\r\n  \"address\": \"13 junio y Equinoccial\",\r\n  \"telephone\": \"098874587\",\r\n  \"password\": \"1245\",\r\n  \"state\": true\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{site}}{{cliente_path}}",
+							"host": [
+								"{{site}}{{cliente_path}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Actualizar Cliente Request",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n            \"names\": \"Juan\",\r\n            \"surnames\": \"Osorio\",\r\n            \"gender\": \"M\",\r\n            \"age\": 39,\r\n            \"document_id\": \"01448527-7\",\r\n            \"address\": \"13 junio y Equinoccial\",\r\n            \"telephone\": \"098874587\",\r\n            \"password\": \"1245\",\r\n            \"state\": true\r\n        }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{site}}{{cliente_path}}",
+							"host": [
+								"{{site}}{{cliente_path}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Eliminar Cliente Request",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{site}}{{cliente_path}}?document_id=00001122-7",
+							"host": [
+								"{{site}}{{cliente_path}}"
+							],
+							"query": [
+								{
+									"key": "document_id",
+									"value": "00001122-7"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Cuentas de cliente",
+			"item": [
+				{
+					"name": "Obtener toda las cuentas Request",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{site}}{{cuenta_path}}",
+							"host": [
+								"{{site}}{{cuenta_path}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Buscar datos de cuenta Request",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{site}}{{cuenta_path}}/find?account_number=478758",
+							"host": [
+								"{{site}}{{cuenta_path}}"
+							],
+							"path": [
+								"find"
+							],
+							"query": [
+								{
+									"key": "account_number",
+									"value": "478758"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Crear nueva cuenta Request",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"account_number\": \"585545\",\r\n  \"account_type\": \"Corriente\",\r\n  \"starting_balance\": 1000,\r\n  \"account_state\": true,\r\n  \"document_id\": \"04521496-5\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{site}}{{cuenta_path}}",
+							"host": [
+								"{{site}}{{cuenta_path}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Actualizar cuenta Request",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"account_number\": \"495878\",\r\n    \"account_type\": \"Ahorro\",\r\n    \"starting_balance\": 0.00,\r\n    \"account_state\": true,\r\n    \"document_id\": \"01448527-7\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{site}}{{cuenta_path}}",
+							"host": [
+								"{{site}}{{cuenta_path}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Eliminar Cuenta Request",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{site}}{{cuenta_path}}?account_number=1234569",
+							"host": [
+								"{{site}}{{cuenta_path}}"
+							],
+							"query": [
+								{
+									"key": "account_number",
+									"value": "1234569"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Movimientos de cuentas",
+			"item": [
+				{
+					"name": "Obtener todo los movimientos Request",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{site}}{{movimiento_path}}",
+							"host": [
+								"{{site}}{{movimiento_path}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Buscar movimiento Request",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{site}}{{movimiento_path}}/find?movement_number=1",
+							"host": [
+								"{{site}}{{movimiento_path}}"
+							],
+							"path": [
+								"find"
+							],
+							"query": [
+								{
+									"key": "movement_number",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Obtener movimientos de cuenta Request",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{site}}{{movimiento_path}}/account?account_number=478758",
+							"host": [
+								"{{site}}{{movimiento_path}}"
+							],
+							"path": [
+								"account"
+							],
+							"query": [
+								{
+									"key": "account_number",
+									"value": "478758"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Guardar Movimiento Request",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"movement_date\": \"2023-01-30T00:34:05.164Z\",\r\n  \"movement_type\": \"Credito\",\r\n  \"movement_value\": \"600\",\r\n  \"movement_description\": \"Deposito de $600\",\r\n  \"account_number\": \"225487\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{site}}{{movimiento_path}}",
+							"host": [
+								"{{site}}{{movimiento_path}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Actualizar Movimiento Request",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"movement_number\": 1,\r\n  \"movement_date\": \"2023-01-31T00:34:05.164Z\",\r\n  \"movement_type\": \"Debito\",\r\n  \"movement_value\": \"-400\",\r\n  \"movement_description\": \"Movimiento debitando por $500\",\r\n  \"account_number\": \"478758\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{site}}{{movimiento_path}}",
+							"host": [
+								"{{site}}{{movimiento_path}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Eliminar movimiento Request",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{site}}{{movimiento_path}}?movement_number=1",
+							"host": [
+								"{{site}}{{movimiento_path}}"
+							],
+							"query": [
+								{
+									"key": "movement_number",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Eliminar Todo los movimientos Request",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{site}}{{movimiento_path}}/all?account_number=478758",
+							"host": [
+								"{{site}}{{movimiento_path}}"
+							],
+							"path": [
+								"all"
+							],
+							"query": [
+								{
+									"key": "account_number",
+									"value": "478758"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "reportes",
+			"item": [
+				{
+					"name": "Generar reporte de movimientos de cliente Request",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{site}}{{reporte_path}}?account_number=478758&start_Date=2023/01/28&end_date=2023/01/31",
+							"host": [
+								"{{site}}{{reporte_path}}"
+							],
+							"query": [
+								{
+									"key": "account_number",
+									"value": "478758"
+								},
+								{
+									"key": "start_Date",
+									"value": "2023/01/28"
+								},
+								{
+									"key": "end_date",
+									"value": "2023/01/31"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
