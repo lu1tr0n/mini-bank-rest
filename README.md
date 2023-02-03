@@ -18,5 +18,5 @@ Rest application for mini bank
 
 Url Swagger: localhost:8080/swagger-ui/index.html#
 
-**Author:** Luis Navarro
-**Email:** [lu1tr0n](lu1tr0n.developer@gmail.com)
+1. **Author:** Luis Navarro
+2. **Email:** [lu1tr0n](lu1tr0n.developer@gmail.com)
